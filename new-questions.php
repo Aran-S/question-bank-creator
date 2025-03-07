@@ -7,10 +7,34 @@
             </div>
             <div class="card-body">
                 <form action="" method="POST">
+                    <?php
+                    if (isset($_POST['program_id'])) {
+                        $program_id = $_POST['program_id'];
+                        $regulation = $_POST['regulation'];
+                        $course_title = $_POST['course_title'];
+                        $part = $_POST['part'];
+                        $questions = $_POST['questions'];
+
+                        $inserted=0;
+                        $array=array_filter(array_map('trim',explode( '!!',$questions)));
+                        foreach($array as $array_questions){
+                        $sql = "INSERT INTO question(program_id, department_id,regulation, course_title, question_part, questions) VALUES('$program_id','$department_id', '$regulation', '$course_title', '$part', '$array_questions')";
+                        if ($con->query($sql) === TRUE) {
+                            $inserted++;
+                        } else {
+                            echo "<div class='alert alert-danger'>Error: " . $sql . "<br>" . $con->error . "</div>";
+                        }
+                    }
+                        if ($inserted > 0) {
+                            echo "<div class='alert alert-success'>$inserted questions inserted successfully</div>";
+                        }
+
+                    }
+                    ?>
                     <div class="mb-3">
                         <label for="program_id" class="form-label">Program</label>
-                        <select class="form-select" id="program_id" name="program_id" onchange="showRegulation(this.value)">
-                            <option selected>Select program</option>
+                        <select class="form-select" id="program_id" name="program_id" required onchange="showRegulation(this.value)">
+                            <option value="" selected>Select program</option>
                             <?php
                             $crse = "SELECT * FROM programs WHERE department_id = '$department_id'";
                             $result = $con->query($crse);
@@ -22,31 +46,38 @@
                             ?>
                         </select>
                     </div>
-                    <br>
                     <div class="form-group">
                         <label>Regulation</label>
-                        <div id="regulationHint"></div>
+                        <div id="regulationHint">
+                            <select class="form-control" id="regulation" name="regulation" required>
+                                <option value="">-- SELECT Regulation --</option>
+                            </select>
+                        </div>
                     </div>
-                    <br>
                     <div class="form-group">
                         <label>Course Title</label>
-                        <div id="courseTitleHint"></div>
+                        <div id="courseTitleHint">
+                            <select class="form-control" name="course_title" required>
+                                <option value="">-- SELECT Course Title --</option>
+                            </select>
+                        </div>
                     </div>
                     <br>
                     <div class="mb-3">
                         <label for="part" class="form-label">Select Part</label>
-                        <select class="form-control" name="part" id="part">
-                            <option selected>[--Select Part--]</option>
+                        <select class="form-control" name="part" id="part" required>
+                            <option value="" selected>[--Select Part--]</option>
                             <option value="1">Part 1</option>
                             <option value="2">Part 2</option>
                             <option value="3">Part 3</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="part" class="form-label">Part</label>
-                        <textarea class="form-control" id="part" name="part" rows="3"></textarea>
+                        <label for="questions" class="form-label">Questions [ use double exclamatory(!!) at the end of the questions ]</label>
+                        <textarea class="form-control" id="questions" name="questions" rows="3" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button></div>
                 </form>
             </div>
         </div>
@@ -55,7 +86,7 @@
 <script>
     function showRegulation(programId) {
         if (programId == "") {
-            document.getElementById("regulationHint").innerHTML = "";
+            document.getElementById("regulationHint").innerHTML = "<select class='form-control' id='regulation' name='regulation' required><option value=''>-- SELECT Regulation --</option></select>";
             return;
         }
         var xhttp = new XMLHttpRequest();
@@ -72,7 +103,7 @@
         var programId = document.getElementById("program_id").value;
         var regulation = document.getElementById("regulation").value;
         if (programId == "" || regulation == "") {
-            document.getElementById("courseTitleHint").innerHTML = "";
+            document.getElementById("courseTitleHint").innerHTML = "<select class='form-control' name='course_title' required><option value=''>-- SELECT Course Title --</option></select>";
             return;
         }
         var xhttp = new XMLHttpRequest();
