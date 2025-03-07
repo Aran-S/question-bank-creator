@@ -8,15 +8,32 @@
         </div>
     </div>
 </footer>
-< <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
-    </body>
+</body>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+<script>
+    function updateTime() {
+        var now = new Date();
+        var options = {
+            timeZone: 'Asia/Kolkata',
+            hour12: true
+        };
+        var formattedTime = now.toLocaleString('en-IN', options);
+        document.getElementById('live-time').innerHTML = formattedTime;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
 
-    </html>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+</html>
