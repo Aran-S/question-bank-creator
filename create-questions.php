@@ -8,9 +8,7 @@
             <div class="mt-3">
             </div>
             <div class="card-body">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <?php
-                    ?>
+                <form action="question-paper.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="program_id" class="form-label">Program</label>
                         <select class="form-select" id="program_id" name="program_id" required onchange="showRegulation(this.value)">
