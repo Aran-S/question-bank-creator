@@ -39,12 +39,13 @@
                             foreach ($data as $row) {
                                 $part = isset($row[0]) ? trim($row[0]) : ''; 
                                 $questions = isset($row[1]) ? trim($row[1]) : '';
+                                $semester = isset($row[2]) ? trim($row[2]) : '';
 
                                 if ($part === '' || !in_array($part, [1, 2, 3])) {
                                     continue;
                                 }
 
-                                $sql = "INSERT INTO question(program_id, department_id, regulation, course_title, question_part, questions) VALUES('$program_id', '$department_id', '$regulation', '$course_title', '$part', '$questions')";
+                                $sql = "INSERT INTO question(program_id, department_id, regulation, course_title, question_part, questions,semester) VALUES('$program_id', '$department_id', '$regulation', '$course_title', '$part', '$questions', '$semester')";
 
                                 if ($con->query($sql) === TRUE) {
                                     $inserted++;

@@ -37,7 +37,7 @@ date_default_timezone_set('Asia/Kolkata');
     <meta name="author" content="" />
     <title>Question-Bank Creator</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/logo.gif" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -50,6 +50,19 @@ date_default_timezone_set('Asia/Kolkata');
             #live-time,
             .card.mb-3.mt-3 {
                 display: none;
+            }
+        }
+
+        #live-time {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000066;
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            10% {
+                opacity: 0;
             }
         }
     </style>
@@ -73,7 +86,6 @@ date_default_timezone_set('Asia/Kolkata');
                 </div>
             </div>
         </nav>
-
     </div>
     <div class="container">
         <div class="col-12 d-flex justify-content-end">

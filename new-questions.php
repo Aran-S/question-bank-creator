@@ -14,11 +14,11 @@
                         $course_title = $_POST['course_title'];
                         $part = $_POST['part'];
                         $questions = $_POST['questions'];
-
+                        $semester = $_POST['semester'];
                         $inserted=0;
                         $array=array_filter(array_map('trim',explode( '!!',$questions)));
                         foreach($array as $array_questions){
-                        $sql = "INSERT INTO question(program_id, department_id,regulation, course_title, question_part, questions) VALUES('$program_id','$department_id', '$regulation', '$course_title', '$part', '$array_questions')";
+                        $sql = "INSERT INTO question(program_id, department_id,regulation, course_title, question_part, questions,semester) VALUES('$program_id','$department_id', '$regulation', '$course_title', '$part', '$array_questions','$semester')";
                         if ($con->query($sql) === TRUE) {
                             $inserted++;
                         } else {
@@ -63,6 +63,10 @@
                         </div>
                     </div>
                     <br>
+                    <div class="form-group">
+                        <label for="semester">Semester</label>
+                        <input type="number" class="form-control" placeholder="Enter Semester" id="semester" name="semester" required>
+                    </div>
                     <div class="mb-3">
                         <label for="part" class="form-label">Select Part</label>
                         <select class="form-control" name="part" id="part" required>
