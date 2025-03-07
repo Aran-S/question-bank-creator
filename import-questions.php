@@ -1,20 +1,62 @@
-<?php include("header.php") ?>
+<?php include("header.php"); ?>
 <div class="mb-5 mt-5">
     <div class="container">
         <div class="card">
             <div class="card-header">
                 <h3 class="text-center">Add New Questions</h3>
             </div>
+            <div class="mt-3">
+                <p class="text-center h5">Template to be <a href="template.xlsx">download!!</a></p>
+            </div>
             <div class="card-body">
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <?php
-                    if (isset($_POST['program_id'])) {
+                    require 'vendor/autoload.php';
+
+                    use PhpOffice\PhpSpreadsheet\IOFactory;
+
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
                         $program_id = $_POST['program_id'];
                         $regulation = $_POST['regulation'];
                         $course_title = $_POST['course_title'];
-                        $part = $_POST['part'];
 
-                        $inserted = 0;
+                        $file = $_FILES['file']['tmp_name'];
+                        $fileType = $_FILES['file']['type'];
+
+                        $allowedMimeTypes = [
+                            'application/vnd.ms-excel',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        ];
+
+                        if (!in_array($fileType, $allowedMimeTypes)) {
+                            echo "<div class='alert alert-danger'>Invalid file type. Please upload an Excel file.</div>";
+                        } else {
+                            $spreadsheet = IOFactory::load($file);
+                            $sheet = $spreadsheet->getActiveSheet();
+                            $data = $sheet->toArray();
+
+                            $inserted = 0;
+                            foreach ($data as $row) {
+                                $part = isset($row[0]) ? trim($row[0]) : ''; 
+                                $questions = isset($row[1]) ? trim($row[1]) : '';
+
+                                if ($part === '' || !in_array($part, [1, 2, 3])) {
+                                    continue;
+                                }
+
+                                $sql = "INSERT INTO question(program_id, department_id, regulation, course_title, question_part, questions) VALUES('$program_id', '$department_id', '$regulation', '$course_title', '$part', '$questions')";
+
+                                if ($con->query($sql) === TRUE) {
+                                    $inserted++;
+                                } else {
+                                    echo "<div class='alert alert-danger'>Error: " . $sql . "<br>" . $con->error . "</div>";
+                                }
+                            }
+
+                            if ($inserted > 0) {
+                                echo "<div class='alert alert-success'>$inserted questions inserted successfully</div>";
+                            }
+                        }
                     }
                     ?>
                     <div class="mb-3">
@@ -40,7 +82,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group mb-3">
                         <label>Course Title</label>
                         <div id="courseTitleHint">
@@ -51,7 +92,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="file" class="form-label">Upload Excel</label>
-                        <input type="file" accept=".xls" class="form-control" id="file" name="file" required>
+                        <input type="file" accept=".xls,.xlsx" class="form-control" id="file" name="file" required>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary mt-3">Submit</button>
