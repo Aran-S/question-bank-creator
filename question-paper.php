@@ -157,14 +157,24 @@ if (isset($_POST['program_id'])) {
             </div>
         </div>
 
+  
         <script>
+            document.title = "<?php echo $subject_code; ?>";
+
+            function printDocument() {
+                window.print();
+            }
+
             window.onbeforeprint = function() {
                 document.querySelector(".print-btn").style.display = "none";
             };
+
             window.onafterprint = function() {
                 document.querySelector(".print-btn").style.display = "block";
             };
         </script>
+
+
 <?php
     }
 }
