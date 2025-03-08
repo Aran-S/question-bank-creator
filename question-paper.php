@@ -4,7 +4,8 @@ if (isset($_POST['program_id'])) {
     $program_id = $_POST['program_id'];
     $regulation = $_POST['regulation'];
     $course_title = $_POST['course_title'];
-    $semester = $_POST['semester'];
+    $date = date("d-m-Y", strtotime($_POST['date']));
+
     $sql = "SELECT * FROM question WHERE program_id='$program_id' AND regulation='$regulation' AND course_title='$course_title' AND department_id='$department_id'";
     $result = $con->query($sql);
 
@@ -34,6 +35,31 @@ if (isset($_POST['program_id'])) {
     if (count($sectionA) < 5 || count($sectionB) < 5 || count($sectionC) < 5) {
         echo "<div class='alert alert-danger text-center'>Not enough questions to create a question paper. Each section must have at least 5 questions.</div>";
     } else {
+        $sem = "SELECT semester FROM question WHERE program_id='$program_id' AND regulation='$regulation' AND course_title LIKE '%$course_title%' AND department_id='$department_id'";
+        $result = $con->query($sem);
+        $semester = $result->fetch_assoc()['semester'];
+
+        $semesterText = [
+            "I Semester",
+            "II Semester",
+            "III Semester",
+            "IV Semester",
+            "V Semester",
+            "VI Semester",
+            "VII Semester",
+            "VIII Semester",
+            "IX Semester",
+            "X Semester",
+            "XI Semester",
+            "XII Semester",
+            "XIII Semester",
+            "XIV Semester"
+        ];
+        $semester = isset($semesterText[$semester - 1]) ? $semesterText[$semester - 1] : "Unknown Semester";
+
+        $code = "SELECT subject_code FROM courses WHERE title1 LIKE '%$course_title%' AND program_id='$program_id'";
+        $result = $con->query($code);
+        $subject_code = $result->fetch_assoc()['subject_code'];
 ?>
         <style>
             body {
@@ -48,6 +74,13 @@ if (isset($_POST['program_id'])) {
                 margin-bottom: 20px;
             }
 
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
             @media print {
 
                 .navbar,
@@ -58,6 +91,7 @@ if (isset($_POST['program_id'])) {
                 }
             }
         </style>
+
         <div class="container mt-4">
             <!-- Header Section -->
             <div class="text-center">
@@ -65,9 +99,16 @@ if (isset($_POST['program_id'])) {
                 <h5 class="text-uppercase fw-bold">Department OF Computer Science and Engineering</h5>
                 <p class="fw-bold text-primary">(Accredited by NAAC With "A" Grade)</p>
                 <p class="fw-bold"> Bharathidasan University, Tiruchirappalli - 24</p>
-                <hr>
-                <h5 class="text-uppercase"><?php echo $semester ?></h5>
+
+                <!-- Date & Subject Code in a single row -->
+                <div class="header-container">
+                    <span>Date:&nbsp;<?php echo $date; ?></span>
+                    <span>Course Code:&nbsp;<?php echo $subject_code; ?></span>
+                </div>
+
+                <h5 class="text-uppercase fw-bold"><?php echo $semester; ?></h5>
                 <h6 class="fw-bold text-secondary"><?php echo htmlspecialchars($course_title); ?></h6>
+                <hr>
             </div>
 
             <!-- Print Button -->
@@ -77,7 +118,6 @@ if (isset($_POST['program_id'])) {
 
             <!-- Question Sections -->
             <div>
-                <h5 class="fw-bold">UNIT-I</h5>
                 <h6 class="fw-bold">SECTION-A (2 Marks Each)</h6>
                 <ol>
                     <?php

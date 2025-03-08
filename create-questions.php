@@ -39,7 +39,17 @@
                                 <option value="">-- SELECT Course Title --</option>
                             </select>
                         </div>
-                    </div>                   
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Selelect Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+
+                    <!-- <div class="form-group mb-3">
+                        <label>Semester</label>
+                        <input type="text" class="form-control" id="course_title" name="course_title" required>
+                    </div> -->
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary mt-3">Create Question</button>
