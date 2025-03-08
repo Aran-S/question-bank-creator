@@ -110,7 +110,7 @@ if (isset($_POST['program_id'])) {
                     <span>Time:&nbsp;3 Hours</span>
                 </div>
                 <div class="header-container">
-                    <span>Program:&nbsp;<?php echo $degree .""."($subject)"; ?></span>
+                    <span>Program:&nbsp;<?php echo $degree .""."($subject)"; ?></span>&nbsp;
                     <span>Course Code:&nbsp;<?php echo $subject_code; ?></span>
                 </div>
 <br>
@@ -124,7 +124,7 @@ if (isset($_POST['program_id'])) {
             </div>
 
             <div>
-                <h6 class="fw-bold">SECTION-A (2 Marks Each)</h6>
+                <h6 class="fw-bold text-center">SECTION-A (2 Marks Each)</h6>
                 <ol>
                     <?php
                     $totalMarks = 0;
@@ -136,8 +136,8 @@ if (isset($_POST['program_id'])) {
                     }
                     ?>
                 </ol>
-
-                <h6 class="fw-bold">SECTION-B (5 Marks Each)</h6>
+<hr>
+                <h6 class="fw-bold text-center">SECTION-B (5 Marks Each)</h6>
                 <ol>
                     <?php
                     foreach ($sectionB as $question) {
@@ -148,8 +148,8 @@ if (isset($_POST['program_id'])) {
                     }
                     ?>
                 </ol>
-
-                <h6 class="fw-bold">SECTION-C (10 Marks Each)</h6>
+<hr>
+                <h6 class="fw-bold text-center">SECTION-C (10 Marks Each)</h6>
                 <ol>
                     <?php
                     foreach ($sectionC as $question) {
