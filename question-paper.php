@@ -60,6 +60,11 @@ if (isset($_POST['program_id'])) {
         $code = "SELECT subject_code FROM courses WHERE title1 LIKE '%$course_title%' AND program_id='$program_id'";
         $result = $con->query($code);
         $subject_code = $result->fetch_assoc()['subject_code'];
+        $prgm="SELECT degree,subject FROM programs WHERE id='$program_id'";
+        $result = $con->query($prgm);
+        $row = $result->fetch_assoc();
+        $degree = $row['degree'];
+        $subject = $row['subject'];
 ?>
         <style>
             body {
@@ -93,18 +98,22 @@ if (isset($_POST['program_id'])) {
         </style>
 
         <div class="container mt-4">
-            
+
             <div class="text-center">
                 <img src="assets/logo.gif" alt="College Logo" class="logo mb-2">
                 <h5 class="text-uppercase fw-bold">Department OF Computer Science and Engineering</h5>
                 <p class="fw-bold text-primary">(Accredited by NAAC With "A" Grade)</p>
-                <p class="fw-bold"> Bharathidasan University, Tiruchirappalli - 24</p>
+                <p class="fw-bold"> Bharathidasan University, Tiruchirappalli - 23</p>
 
                 <div class="header-container">
                     <span>Date:&nbsp;<?php echo $date; ?></span>
+                    <span>Time:&nbsp;3 Hours</span>
+                </div>
+                <div class="header-container">
+                    <span>Program:&nbsp;<?php echo $degree .""."($subject)"; ?></span>
                     <span>Course Code:&nbsp;<?php echo $subject_code; ?></span>
                 </div>
-
+<br>
                 <h5 class="text-uppercase fw-bold"><?php echo $semester; ?></h5>
                 <h6 class="fw-bold text-secondary"><?php echo htmlspecialchars($course_title); ?></h6>
                 <hr>
