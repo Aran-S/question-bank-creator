@@ -93,14 +93,13 @@ if (isset($_POST['program_id'])) {
         </style>
 
         <div class="container mt-4">
-            <!-- Header Section -->
+            
             <div class="text-center">
                 <img src="assets/logo.gif" alt="College Logo" class="logo mb-2">
                 <h5 class="text-uppercase fw-bold">Department OF Computer Science and Engineering</h5>
                 <p class="fw-bold text-primary">(Accredited by NAAC With "A" Grade)</p>
                 <p class="fw-bold"> Bharathidasan University, Tiruchirappalli - 24</p>
 
-                <!-- Date & Subject Code in a single row -->
                 <div class="header-container">
                     <span>Date:&nbsp;<?php echo $date; ?></span>
                     <span>Course Code:&nbsp;<?php echo $subject_code; ?></span>
@@ -111,12 +110,10 @@ if (isset($_POST['program_id'])) {
                 <hr>
             </div>
 
-            <!-- Print Button -->
             <div class="text-end">
                 <button class="btn btn-primary print-btn" onclick="window.print()">Print</button>
             </div>
 
-            <!-- Question Sections -->
             <div>
                 <h6 class="fw-bold">SECTION-A (2 Marks Each)</h6>
                 <ol>
