@@ -32,8 +32,10 @@ if (isset($_POST['program_id'])) {
         shuffle($sectionC);
     }
 
-    if (count($sectionA) < 5 || count($sectionB) < 5 || count($sectionC) < 5) {
-        echo "<div class='alert alert-danger text-center'>Not enough questions to create a question paper. Each section must have at least 5 questions.</div>";
+    // Ensure the required number of questions for each section
+    if (count($sectionA) < 10 || count($sectionB) < 10 || count($sectionC) < 6) {
+        echo "<div class='alert alert-danger text-center'>Not enough questions to create a question paper. Section A requires 10 questions, Section B requires 10 questions (5 pairs), and Section C requires 6 questions (3 pairs).</div>";
+        exit;
     } else {
         $sem = "SELECT semester FROM question WHERE program_id='$program_id' AND regulation='$regulation' AND course_title LIKE '%$course_title%' AND department_id='$department_id'";
         $result = $con->query($sem);
@@ -59,8 +61,8 @@ if (isset($_POST['program_id'])) {
 
         $code = "SELECT subject_code FROM courses WHERE title1 LIKE '%$course_title%' AND program_id='$program_id'";
         $result = $con->query($code);
-        $subject_code = $result->fetch_assoc()['subject_code'];
-        $prgm="SELECT degree,subject FROM programs WHERE id='$program_id'";
+        $subject_code = $result->fetch_assoc()['subject_code'] ?? '';
+        $prgm = "SELECT degree,subject FROM programs WHERE id='$program_id'";
         $result = $con->query($prgm);
         $row = $result->fetch_assoc();
         $degree = $row['degree'];
@@ -110,10 +112,10 @@ if (isset($_POST['program_id'])) {
                     <span>Time:&nbsp;3 Hours</span>
                 </div>
                 <div class="header-container">
-                    <span>Program:&nbsp;<?php echo $degree .""."($subject)"; ?></span>&nbsp;
+                    <span>Program:&nbsp;<?php echo $degree . "" . "($subject)"; ?></span>&nbsp;
                     <span>Course Code:&nbsp;<?php echo $subject_code; ?></span>
                 </div>
-<br>
+                <br>
                 <h5 class="text-uppercase fw-bold"><?php echo $semester; ?></h5>
                 <h6 class="fw-bold text-secondary"><?php echo htmlspecialchars($course_title); ?></h6>
                 <hr>
@@ -128,42 +130,42 @@ if (isset($_POST['program_id'])) {
                 <ol>
                     <?php
                     $totalMarks = 0;
-                    foreach ($sectionA as $question) {
-                        if ($totalMarks + 2 <= 75) {
-                            echo "<li>" . htmlspecialchars($question) . "</li>";
-                            $totalMarks += 2;
-                        }
+                    for ($i = 0; $i < 10; $i++) {
+                        echo "<li>" . htmlspecialchars($sectionA[$i]) . "</li>";
+                        $totalMarks += 2;
                     }
                     ?>
                 </ol>
-<hr>
+                <hr>
                 <h6 class="fw-bold text-center">SECTION-B (5 Marks Each)</h6>
                 <ol>
                     <?php
-                    foreach ($sectionB as $question) {
-                        if ($totalMarks + 5 <= 75) {
-                            echo "<li>" . htmlspecialchars($question) . "</li>";
-                            $totalMarks += 5;
-                        }
+                    for ($i = 0; $i < 5; $i++) {
+                        echo "<li>";
+                        echo "a) " . htmlspecialchars($sectionB[$i * 2]) . "<br>";
+                        echo "b) " . htmlspecialchars($sectionB[$i * 2 + 1]);
+                        echo "</li>";
+                        $totalMarks += 5;
                     }
                     ?>
                 </ol>
-<hr>
+                <hr>
                 <h6 class="fw-bold text-center">SECTION-C (10 Marks Each)</h6>
                 <ol>
                     <?php
-                    foreach ($sectionC as $question) {
-                        if ($totalMarks + 10 <= 75) {
-                            echo "<li>" . htmlspecialchars($question) . "</li>";
-                            $totalMarks += 10;
-                        }
+                    for ($i = 0; $i < 3; $i++) {
+                        echo "<li>";
+                        echo "a) " . htmlspecialchars($sectionC[$i * 2]) . "<br>";
+                        echo "b) " . htmlspecialchars($sectionC[$i * 2 + 1]);
+                        echo "</li>";
+                        $totalMarks += 10;
                     }
                     ?>
                 </ol>
             </div>
         </div>
 
-  
+
         <script>
             document.title = "<?php echo $subject_code; ?>";
 
